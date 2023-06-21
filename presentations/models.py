@@ -11,7 +11,7 @@ class Status(models.Model):
     direct URL to view it.
     """
 
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=10, default="SUBMITTED")
 
     def __str__(self):
         return self.name
