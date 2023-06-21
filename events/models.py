@@ -3,14 +3,6 @@ from django.urls import reverse
 
 
 class State(models.Model):
-    """
-    The State model represents a US state with its name
-    and abbreviation.
-
-    State is a Value Object and, therefore, does not have a
-    direct URL to view it.
-    """
-
     name = models.CharField(max_length=20)
     abbreviation = models.CharField(max_length=2)
 
@@ -18,15 +10,10 @@ class State(models.Model):
         return f"{self.abbreviation}"
 
     class Meta:
-        ordering = ("abbreviation",)  # Default ordering for State
+        ordering = ("abbreviation",)
 
 
 class Location(models.Model):
-    """
-    The Location model describes the place at which an
-    Event takes place, like a hotel or conference center.
-    """
-
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     room_count = models.PositiveSmallIntegerField()
@@ -46,17 +33,10 @@ class Location(models.Model):
         return self.name
 
     class Meta:
-        ordering = ("name",)  # Default ordering for Location
+        ordering = ("name",)
 
 
 class Conference(models.Model):
-    """
-    The Conference model describes a specific conference.
-    """
-
-    # Has a one-to-many relationship with presentations.Presentation
-    # Has a one-to-many relationship with attendees.Attendee
-
     name = models.CharField(max_length=200)
     starts = models.DateTimeField()
     ends = models.DateTimeField()

@@ -3,11 +3,6 @@ from django.urls import reverse
 
 
 class Attendee(models.Model):
-    """
-    The Attendee model represents someone that wants to attend
-    a conference
-    """
-
     email = models.EmailField()
     name = models.CharField(max_length=200)
     company_name = models.CharField(max_length=200, null=True, blank=True)
@@ -29,18 +24,10 @@ class Attendee(models.Model):
         try:
             self.badge
         except ObjectDoesNotExist:
-            Badge.objects.create(attendee=self)
+            return None
 
 
 class Badge(models.Model):
-    """
-    The Badge model represents the badge an attendee gets to
-    wear at the conference.
-
-    Badge is a Value Object and, therefore, does not have a
-    direct URL to view it.
-    """
-
     created = models.DateTimeField(auto_now_add=True)
 
     attendee = models.OneToOneField(
