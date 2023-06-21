@@ -11,7 +11,9 @@ class Status(models.Model):
     direct URL to view it.
     """
 
-    name = models.CharField(max_length=10, default="SUBMITTED")
+    name = models.CharField(
+        max_length=10,
+    )
 
     def __str__(self):
         return self.name
@@ -39,6 +41,7 @@ class Presentation(models.Model):
         Status,
         related_name="presentations",
         on_delete=models.PROTECT,
+        default="SUBMITTED",
     )
 
     conference = models.ForeignKey(
