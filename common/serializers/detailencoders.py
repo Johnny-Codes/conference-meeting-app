@@ -49,7 +49,14 @@ class ConferenceDetailEncoder(ModelEncoder):
 
 class LocationDetailEncoder(StateEncoder, ModelEncoder):
     model = Location
-    properties = ["name", "city", "room_count", "created", "updated", "state"]
+    properties = [
+        "name",
+        "city",
+        "room_count",
+        "created",
+        "updated",
+        "state",
+    ]
 
     encoders = {
         "state": StateEncoder(),

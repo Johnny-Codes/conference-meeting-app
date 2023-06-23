@@ -28,7 +28,6 @@ class Presentation(models.Model):
         Status,
         related_name="presentations",
         on_delete=models.PROTECT,
-        default="SUBMITTED",
     )
 
     conference = models.ForeignKey(
@@ -36,6 +35,13 @@ class Presentation(models.Model):
         related_name="presentations",
         on_delete=models.CASCADE,
     )
+
+    @classmethod
+    def create(cls, **kwargs):
+        kwargs["status"] = Status.objects.get(name="SUBMITTED")
+        presentation = cls(**kwargs)
+        presentation.save()
+        return presentation
 
     def get_api_url(self):
         return reverse("api_show_presentation", kwargs={"id": self.id})
