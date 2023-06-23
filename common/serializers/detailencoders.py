@@ -33,20 +33,6 @@ class StateEncoder(ModelEncoder):
     ]
 
 
-class ConferenceDetailEncoder(ModelEncoder):
-    model = Conference
-    properties = [
-        "name",
-        "description",
-        "max_presentations",
-        "max_attendees",
-        "starts",
-        "ends",
-        "created",
-        "updated",
-    ]
-
-
 class LocationDetailEncoder(StateEncoder, ModelEncoder):
     model = Location
     properties = [
@@ -56,6 +42,7 @@ class LocationDetailEncoder(StateEncoder, ModelEncoder):
         "created",
         "updated",
         "state",
+        "picture_url",
     ]
 
     encoders = {
@@ -68,4 +55,18 @@ class PresentationDetailEncoder(ModelEncoder):
     properties = [
         "title",
         "synopsis",
+    ]
+
+
+class ConferenceDetailEncoder(ModelEncoder):
+    model = Conference
+    properties = [
+        "name",
+        "description",
+        "max_presentations",
+        "max_attendees",
+        "starts",
+        "ends",
+        "created",
+        "updated",
     ]

@@ -12,6 +12,8 @@ from common.serializers.listencoders import (
     ConferenceListEncoder,
     LocationListEncoder,
 )
+from .acls.pexels import get_picture_url
+from .acls.openweather import get_weather_data
 
 
 @require_http_methods(["GET", "POST"])
@@ -44,12 +46,23 @@ def api_list_conferences(request):
 @require_http_methods(["GET", "DELETE", "PUT"])
 def api_show_conference(request, id):
     if request.method == "GET":
-        conference = Conference.objects.get(id=id)
-        return JsonResponse(
-            {"conference": conference},
-            encoder=ConferenceDetailEncoder,
-            safe=False,
-        )
+        try:
+            conference = Conference.objects.get(id=id)
+            try:
+                weather = get_weather_data(
+                    conference.location.city,
+                    conference.location.state.name,
+                )
+            except IndexError:
+                weather = "no weather data available"
+            response = {"weather": weather, "conference": conference}
+            return JsonResponse(
+                response,
+                encoder=ConferenceDetailEncoder,
+                safe=False,
+            )
+        except Conference.DoesNotExist:
+            return JsonResponse({"message": "conference does not exist"})
     elif request.method == "DELETE":
         try:
             count, _ = Conference.objects.get(id=id).delete()
@@ -96,6 +109,8 @@ def api_list_locations(request):
                 {"message": "Invalid state abbreviation"},
                 status=400,
             )
+        picture_url = get_picture_url(content["city"], state.name)
+        content.update(**picture_url)
         loc = Location.objects.create(**content)
         return JsonResponse(
             loc,

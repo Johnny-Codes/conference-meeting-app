@@ -47,7 +47,11 @@ def api_show_attendee(request, id):
     )
 
 
-def create_badge(request, id):
+def api_create_badge(request, id):
     if request.method == "POST":
         Attendee.objects.get(id=id).create_badge()
-        return JsonResponse("created", status=201)
+        return JsonResponse(
+            f"badge created for: {Attendee.objects.get(id=id).name}",
+            status=201,
+            safe=False,
+        )

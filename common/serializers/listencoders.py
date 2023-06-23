@@ -62,6 +62,7 @@ class PresentationListEncoder(ModelEncoder):
         "created",
         "status",
         "conference",
+        "picture_url",
     ]
     encoders = {
         "status": StatusEncoder(),

@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Attendee(models.Model):
@@ -22,8 +22,10 @@ class Attendee(models.Model):
         return reverse("api_show_attendee", kwargs={"id": self.id})
 
     def create_badge(self):
-        if not self.badge:
-            self.badge.created = datetime.now()
+        try:
+            self.badge
+        except ObjectDoesNotExist:
+            Badge.objects.create(attendee=self)
 
 
 class Badge(models.Model):
@@ -35,3 +37,6 @@ class Badge(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+
+    def __str__(self):
+        return f"Badge created for {self.attendee.name}"
