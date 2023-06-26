@@ -1,5 +1,5 @@
 import requests
-from ..api_keys import OPENWEATHER_API_KEY
+from common.api_keys import OPENWEATHER_API_KEY
 
 
 def get_lat_lon(city, state):
