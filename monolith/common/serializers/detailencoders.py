@@ -7,22 +7,7 @@ from events.models import (
 )
 
 from presentations.models import Presentation
-from attendees.models import Attendee
 from .listencoders import ConferenceListEncoder
-
-
-class AttendeeDetailEncoder(ModelEncoder):
-    model = Attendee
-    properties = [
-        "email",
-        "name",
-        "company_name",
-        "created",
-        "conference",
-    ]
-    encoders = {
-        "conference": ConferenceListEncoder(),
-    }
 
 
 class StateEncoder(ModelEncoder):

@@ -8,7 +8,7 @@ from .api_views import (
 
 urlpatterns = [
     path(
-        "conferences/<int:conference_id>/attendees/",
+        "conferences/<int:conference_vo_id>/attendees/",
         api_list_attendees,
         name="api_list_attendees",
     ),
@@ -21,5 +21,10 @@ urlpatterns = [
         "attendees/<int:id>/create_badge/",
         api_create_badge,
         name="api_create_badge",
+    ),
+    path(
+        "attendees/",
+        api_list_attendees,
+        name="api_create_attendees",
     ),
 ]

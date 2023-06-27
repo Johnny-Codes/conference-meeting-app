@@ -10,26 +10,6 @@ from presentations.models import (
     Status,
 )
 
-from attendees.models import (
-    Attendee,
-    Badge,
-)
-
-
-class BadgeEncoder(ModelEncoder):
-    model = Badge
-    properties = [
-        "created",
-    ]
-
-
-class AttendeeListEncoder(ModelEncoder):
-    model = Attendee
-    properties = [
-        "name",
-    ]
-    encoders = {}
-
 
 class ConferenceListEncoder(ModelEncoder):
     model = Conference
