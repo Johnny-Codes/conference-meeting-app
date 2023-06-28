@@ -38,9 +38,20 @@ class LocationDetailEncoder(StateEncoder, ModelEncoder):
 class PresentationDetailEncoder(ModelEncoder):
     model = Presentation
     properties = [
+        "presenter_name",
+        "company_name",
+        "presenter_email",
         "title",
         "synopsis",
+        "created",
+        "conference",
     ]
+    encoders = {
+        "conference": ConferenceListEncoder(),
+    }
+
+    def get_extra_data(self, o):
+        return {"status": o.status.name}
 
 
 class ConferenceDetailEncoder(ModelEncoder):

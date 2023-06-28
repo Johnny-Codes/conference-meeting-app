@@ -31,20 +31,8 @@ class LocationListEncoder(ModelEncoder):
 
 
 class PresentationListEncoder(ModelEncoder):
-    conferences = ConferenceListEncoder
     model = Presentation
     properties = [
-        "presenter_name",
-        "company_name",
-        "presenter_email",
         "title",
         "synopsis",
-        "created",
-        "status",
-        "conference",
-        "picture_url",
     ]
-    encoders = {
-        "status": StatusEncoder(),
-        "conference": ConferenceListEncoder(),
-    }

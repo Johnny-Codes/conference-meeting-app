@@ -6,6 +6,54 @@ from common.serializers.listencoders import PresentationListEncoder
 from .models import Presentation
 from events.models import Conference
 
+import pika
+
+
+def send_presentation_status_message(presentation, status):
+    parameters = pika.ConnectionParameters(host="rabbitmq")
+    connection = pika.BlockingConnection(parameters)
+    channel = connection.channel()
+    channel.queue_declare(queue="status")
+    response = {
+        "presenter_name": presentation.presenter_name,
+        "presenter_email": presentation.presenter_email,
+        "title": presentation.title,
+        "status": status,
+    }
+    response = json.dumps(response)
+    print(response)
+    channel.basic_publish(
+        exchange="",
+        routing_key="status",
+        body=response,
+    )
+
+    connection.close()
+
+
+@require_http_methods(["PUT"])
+def api_approve_presentation(request, id):
+    presentation = Presentation.objects.get(id=id)
+    presentation.approve_presentation()
+    send_presentation_status_message(presentation, "APPROVED")
+    return JsonResponse(
+        presentation,
+        encoder=PresentationDetailEncoder,
+        safe=False,
+    )
+
+
+@require_http_methods(["PUT"])
+def api_reject_presentation(request, id):
+    presentation = Presentation.objects.get(id=id)
+    presentation.reject_presentation()
+    send_presentation_status_message(presentation, "REJECTED")
+    return JsonResponse(
+        presentation,
+        encoder=PresentationDetailEncoder,
+        safe=False,
+    )
+
 
 @require_http_methods(["GET", "POST"])
 def api_list_presentations(request, conference_id):
